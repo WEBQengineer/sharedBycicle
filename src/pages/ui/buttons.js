@@ -56,7 +56,7 @@ export default class Buttons extends Component{
           <Button type='primary' onClick={this.handleCloseLoading}>关闭</Button>
         </Card>
 
-        <Card title='按钮组'>
+        <Card title='按钮组' className='card-wrap'>
           <Button.Group>
               <Button type='primary'>
                 <Icon type='left' />

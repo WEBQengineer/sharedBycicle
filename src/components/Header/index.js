@@ -2,7 +2,7 @@
 //百度天气api   http://api.map.baidu.com/telematics/v3/weather?location=beijing&output=json&ak=3p49MVra6urFRGOT9s8UBWr2
 //http://api.map.baidu.com/telematics/v3/weather?location=beijing&output=json&ak=HFy9NSvdH3rgIaXmBoNHEOhpRhanoaG3
 import React, { Component } from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Spin } from 'antd';
 import './index.less';
 import { getCurrentDate } from '../../utils/utils';
 import axios from '../../axios';
@@ -10,7 +10,10 @@ import axios from '../../axios';
 
 
 export default class Header extends Component{
-  state = {}
+  state = {
+    // Loading_weather_data:'正在加载天气数据',
+    spinning: true
+  }
   //componentWillMount 在渲染前调用
   componentWillMount(){
     this.setState({
@@ -31,13 +34,21 @@ export default class Header extends Component{
       // url: 'https://restapi.amap.com/v3/weather/weatherInfo?city='+encodeURIComponent(city)+'&key=7d5319e0ab53508092dd0e713ece4b6e'
       url: 'http://api.map.baidu.com/telematics/v3/weather?location='+encodeURIComponent(city)+'&output=json&ak=HFy9NSvdH3rgIaXmBoNHEOhpRhanoaG3'  
     }).then((res)=>{
-      if(res.status == 'success'){
-        let data = res.results[0].weather_data[0];
         this.setState({
-          dayPictureUrl:data.dayPictureUrl,
-          weather:data.weather
+          Loading_weather_data:'',
+          spinning: false
         })
-      }
+        if(res.status == 'success'){
+          let data = res.results[0].weather_data[0];
+          let data2 = res.results[0];
+          this.setState({
+            dayPictureUrl:data.dayPictureUrl,
+            weather:data.weather,
+            currentCity:data2.currentCity
+          })
+        }            
+    },()=>{
+      alert('网络连接失败，请检查网络')
     })
   }
 
@@ -55,7 +66,10 @@ export default class Header extends Component{
             首页
           </Col>
           <Col span={20} className='weather'>
+            {/* <span className='date'>{this.state.Loading_weather_data}</span><Spin spinning={this.state.spinning}></Spin> */}
+            <Spin spinning={this.state.spinning} tip='天气信息加载中……' size="small"></Spin>
             <span className='date'>{this.state.sysTime}</span>
+            <span className='weather-currentCity'>{this.state.currentCity}市</span>
             <span className='weather-img'>
               <img src={this.state.dayPictureUrl} alt=''/>
             </span>

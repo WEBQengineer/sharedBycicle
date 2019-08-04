@@ -1,9 +1,35 @@
-Card{
-  margin-bottom: 10px;
-}
-
 .card-wrap{
+  margin-bottom: 10px;
   button{
     margin-right: 10px
   }
+  .loading{
+    margin-bottom: 10px
+  }
+
+}
+//我通过这个改变了Header组件中加载spin的Margin值，不过我感觉这个应该是antd提供的专门用来操作spin的
+.ant-spin-dot-spin {
+  margin-right: 10px;
+}
+
+// 自定义的，用来修改模态框的位置
+.vertical-center-modal {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.vertical-center-modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  width: 0;
+}
+
+.vertical-center-modal .ant-modal {
+  display: inline-block;
+  vertical-align: middle;
+  top: 0;
+  text-align: left;
 }
