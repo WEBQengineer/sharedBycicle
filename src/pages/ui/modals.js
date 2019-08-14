@@ -148,7 +148,6 @@ export default class Modals extends Component{
         >
           <p>欢迎使用本网站</p>
         </Modal>
-        
       </div>
     );
   }
