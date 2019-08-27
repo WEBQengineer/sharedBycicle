@@ -2,42 +2,49 @@ import React, { Component } from 'react';
 import { Table, Card } from 'antd';
 
 export default class ETable extends Component{
-  //行点击事件
-  
+  state= {
+    selectedRowKeys:[]
+  }
+  //行点击事件  
   onRowClick = (record, index)=>{
+    console.log('456')
     let rowSelection = this.props.rowSelection;
     if(rowSelection.type == 'checkbox'){
       let selectedRowKeys = this.props.selectedRowKeys;
       let selectedItem = this.props.selectedItem;
       let selectedIds = this.props.selectedIds;
-      // console.log(record.id,'+++',index);
       if (selectedIds) {
         const i = selectedIds.indexOf(record.id);
         //indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。如果要检索的字符串值没有出现，则该方法返回 -1。
         if(i == -1){
           selectedIds.push(record.id);
-          selectedRowKeys.push(index);
+          let abc = this.state.selectedRowKeys;
+          console.log('abc是：'+abc);
+          abc.push(index);
+          this.setState({
+            selectedRowKeys:abc
+          })
           selectedItem.push(record);
         }else{
+          console.log('else');
           selectedIds.splice(i,1);
-          console.log('index的值',index);
-          console.log(selectedRowKeys);
-          // console.log('类型',typeof(selectedRowKeys));
           for(let i=0;i<selectedRowKeys.length;i++){
             if(selectedRowKeys[i] == index){
-              console.log('for循环内index的值',index);
-              console.log('selectedRowKeys的值：'+selectedRowKeys[i]);
-              console.log('删除第:',(selectedRowKeys[i]+1)+'个');
               selectedRowKeys.splice(i,1);
-              break;
             }
           }
-          console.log(selectedRowKeys);
           selectedItem.splice(record)
         }
       } else {
+        console.log('还有一个');
+        let def = this.state.selectedRowKeys;
+          console.log('def是：'+def);
+          def.push(index);
+          this.setState({
+            selectedRowKeys:def
+        })
         selectedIds = [record.id];
-        selectedRowKeys = [index];
+        // selectedRowKeys = [index];
         selectedItem = [record]
       }
       this.props.updateSelectedItem(selectedRowKeys, selectedItem, selectedIds);
@@ -57,8 +64,15 @@ export default class ETable extends Component{
     let selectedRowKeys = this.props.selectedRowKeys;
     const rowSelection = {
       type:'radio',
-      selectedRowKeys,
-      onChange:this.onSelectChange
+      selectedRowKeys:this.state.selectedRowKeys,
+      onChange: (selectedRowKeys, selectedRows) => {
+        this.setState({
+          selectedRowKeys:selectedRowKeys,
+          selectedRows
+        },()=>{
+          console.log('选中项有',this.state.selectedRowKeys)
+      });
+      }
     }
     if (!row_selection){
         row_selection = false;
@@ -74,9 +88,10 @@ export default class ETable extends Component{
         onRow={(record, index)=>{
           return {
             onClick: ()=>{
-              // if (!row_selection) {
-              //   return
-              // }
+              console.log(rowSelection.selectedRowKeys)
+              if (!row_selection) {
+                return;
+              }
               this.onRowClick(record, index);
             }
           }

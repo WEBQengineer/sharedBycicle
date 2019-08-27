@@ -175,6 +175,17 @@ export default class Order extends Component{
           <Button type='primary' onClick={this.openOrderDetail} >订单详情</Button>
           <Button type='primary' style={{marginLeft:20}} onClick={this.handleConfirm}>结束订单</Button>
         </Card>
+        {/* <Card>
+          <Table
+            columns={columns}
+            dataSource={this.state.list}
+            rowSelection = {{
+              type:'checkbox'
+            }}
+          >
+
+          </Table>
+        </Card> */}
         <div className='content-wrap'>
           <ETable
             updateSelectedItem={Util.updateSelectedItem.bind(this)}
@@ -185,7 +196,7 @@ export default class Order extends Component{
             selectedRowKeys={this.state.selectedRowKeys}
             pagination={this.state.pagination}
             rowSelection = {{
-              type:'checkbox'
+              type:'checkbox',
             }}
           />
         </div>
