@@ -15,6 +15,12 @@ import Carousel from './pages/ui/carousel';
 import FormLogin from './pages/form/login';
 import Register from './pages/form/register';
 import BasicTable from './pages/table/basicTable';
+import HighTable from './pages/table/highTable';
+import City from './pages/city/index';
+import Order from './pages/order/index';
+import Common from './common';
+import OrderDetail from './pages/order/detail';
+
 
 export default class IRouter extends Component{
   render(){
@@ -36,11 +42,18 @@ export default class IRouter extends Component{
                     <Route path='/admin/form/login' component={FormLogin}></Route>
                     <Route path='/admin/form/reg' component={Register}></Route>
                     <Route path='/admin/table/basic' component={BasicTable}></Route>
+                    <Route path='/admin/table/high' component={HighTable}></Route>
+                    <Route path='/admin/city' component={City}></Route>
+                    <Route path='/admin/order' component={Order}></Route>
                     <Route component={NoMatch}/>
                   </Switch>
                 </Admin>
               }/>
-              <Route path='/order/detail' component={Login}/>
+              <Route path='/common' render={()=>
+                <Common>
+                  <Route path='/common/order/detail/:orderId' component={OrderDetail} />
+                </Common>
+              } />
           </App>
       </HashRouter>
     );

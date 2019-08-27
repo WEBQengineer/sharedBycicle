@@ -1,6 +1,18 @@
 @import './default.less';
 @import './loading.less';
 
+ul,li{
+  list-style: none
+}
+.clearfix{
+  &::after{
+    content: ' ';
+    clear:both;
+    display: block;
+    visibility: hidden;
+  }
+}
+
 .container {
   .nav-left{
     color: #fff;
@@ -15,5 +27,15 @@
   .content{
     position: relative;
     padding: 20px;
+  }
+}
+
+.content-wrap{
+  background-color: #fff;
+  border:solid 1px #fff;
+  margin-top: -3px;
+  .ant-table-wrapper{
+    margin-left: -1px;
+    margin-right: -2px;
   }
 }

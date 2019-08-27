@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Spin } from 'antd';
 import './index.less';
-import { getCurrentDate } from '../../utils/utils';
+import Util from '../../utils/utils';
 import axios from '../../axios';
 
 
@@ -22,7 +22,7 @@ export default class Header extends Component{
     //刷新当前时间
     setInterval(() => { 
       this.setState({
-        sysTime:getCurrentDate()
+        sysTime:Util.getCurrentDate()
       });
     },1000);
     this.getWeatherAPIData();
@@ -53,31 +53,41 @@ export default class Header extends Component{
   }
 
   render(){
+    const menuType = this.props.menuType;
     return(
       <div className='header'>
         <Row className='header-top'>
-          <Col span={24}>
+          {
+            menuType?<Col span={6} className='logo'>
+                          <img src='/assets/logo-ant.svg' alt='' />
+                          <span>shared bicycle</span>
+                        </Col>:''
+          }
+          <Col span={menuType?18:24}>
             <span>欢迎，{this.state.userName}</span>
             <a href='#'>退出</a>
           </Col>
         </Row>
-        <Row className='breadcrumb'>
-          <Col span={4} className='breadcrumb-title'>
-            首页
-          </Col>
-          <Col span={20} className='weather'>
-            {/* <span className='date'>{this.state.Loading_weather_data}</span><Spin spinning={this.state.spinning}></Spin> */}
-            <Spin spinning={this.state.spinning} tip='天气信息加载中……' size="small"></Spin>
-            <span className='date'>{this.state.sysTime}</span>
-            <span className='weather-currentCity'>{this.state.currentCity}市</span>
-            <span className='weather-img'>
-              <img src={this.state.dayPictureUrl} alt=''/>
-            </span>
-            <span className='weather-detail'>
-              {this.state.weather}
-            </span>
-          </Col>
-        </Row>
+        {
+          //通过设置menutype来控制是否展示面包屑
+          menuType?'':
+          <Row className='breadcrumb'>
+            <Col span={4} className='breadcrumb-title'>
+              首页
+            </Col>
+            <Col span={20} className='weather'>
+              <Spin spinning={this.state.spinning} tip='天气信息加载中……' size="small"></Spin>
+              <span className='date'>{this.state.sysTime}</span>
+              <span className='weather-currentCity'>{this.state.currentCity}市</span>
+              <span className='weather-img'>
+                <img src={this.state.dayPictureUrl} alt=''/>
+              </span>
+              <span className='weather-detail'>
+                {this.state.weather}
+              </span>
+            </Col>
+          </Row>
+        }
       </div>
     );
   }
