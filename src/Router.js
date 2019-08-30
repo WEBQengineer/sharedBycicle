@@ -20,6 +20,9 @@ import City from './pages/city/index';
 import Order from './pages/order/index';
 import Common from './common';
 import OrderDetail from './pages/order/detail';
+import Bar from './pages/echarts/bar/index';
+import Pie from './pages/echarts/pie/index';
+import RichText from './pages/rich/index';
 
 
 export default class IRouter extends Component{
@@ -45,6 +48,9 @@ export default class IRouter extends Component{
                     <Route path='/admin/table/high' component={HighTable}></Route>
                     <Route path='/admin/city' component={City}></Route>
                     <Route path='/admin/order' component={Order}></Route>
+                    <Route path='/admin/charts/bar' component={Bar}></Route>
+                    <Route path='/admin/charts/pie' component={Pie}></Route>
+                    <Route path='/admin/rich' component={RichText}></Route>
                     <Route component={NoMatch}/>
                   </Switch>
                 </Admin>

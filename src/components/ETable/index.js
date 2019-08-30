@@ -5,78 +5,69 @@ export default class ETable extends Component{
   state= {
     selectedRowKeys:[]
   }
+
+  componentDidMount(){
+    let stateSelectRow = this.state.selectedRowKeys;
+    let selectedRowKeys = this.props.selectedRowKeys;
+    if(!selectedRowKeys){
+      selectedRowKeys = [selectedRowKeys]
+    };
+    selectedRowKeys = selectedRowKeys.concat(stateSelectRow);
+    // selectedRowKeys.push(...stateSelectRow);
+    selectedRowKeys.splice(0,1);
+    console.log('之前就已经有的',selectedRowKeys);
+    selectedRowKeys = Array.from(new Set(selectedRowKeys));
+    this.setState({
+      selectedRowKeys
+    })
+  }
+
   //行点击事件  
-  onRowClick = (record, index)=>{
-    console.log('456')
-    let rowSelection = this.props.rowSelection;
+  onRowClick = (record, index,rowSelection)=>{
+    let selectedRowKeys = this.state.selectedRowKeys;
     if(rowSelection.type == 'checkbox'){
-      let selectedRowKeys = this.props.selectedRowKeys;
-      let selectedItem = this.props.selectedItem;
-      let selectedIds = this.props.selectedIds;
-      if (selectedIds) {
-        const i = selectedIds.indexOf(record.id);
-        //indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。如果要检索的字符串值没有出现，则该方法返回 -1。
-        if(i == -1){
-          selectedIds.push(record.id);
-          let abc = this.state.selectedRowKeys;
-          console.log('abc是：'+abc);
-          abc.push(index);
-          this.setState({
-            selectedRowKeys:abc
-          })
-          selectedItem.push(record);
-        }else{
-          console.log('else');
-          selectedIds.splice(i,1);
-          for(let i=0;i<selectedRowKeys.length;i++){
-            if(selectedRowKeys[i] == index){
-              selectedRowKeys.splice(i,1);
-            }
+      //indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。如果要检索的字符串值没有出现，则该方法返回 -1。
+        // for(let i=0;i<selectedRowKeys.length;i++){
+          // const i = selectedIds.indexOf(record.id);
+          // if(selectedRowKeys[i] == index){
+          let i = selectedRowKeys.indexOf(index);
+          if(i!=-1 ){
+            selectedRowKeys.splice(i,1);
+            selectedRowKeys = Array.from(new Set(selectedRowKeys));
+            // console.log('还剩下',selectedRowKeys);
+            this.setState({
+              selectedRowKeys
+            });
+            console.log('没进');
+          }else{
+            console.log('进else')
+            selectedRowKeys.push(index);
+            selectedRowKeys = Array.from(new Set(selectedRowKeys));
+            //console.log('点击行后selectedRowKeys是：'+selectedRowKeys);
+            this.setState({
+              selectedRowKeys:selectedRowKeys
+            });
+            // console.log('当前点击的行是：'+index,'选中的是',selectedRowKeys);
           }
-          selectedItem.splice(record)
-        }
-      } else {
-        console.log('还有一个');
-        let def = this.state.selectedRowKeys;
-          console.log('def是：'+def);
-          def.push(index);
-          this.setState({
-            selectedRowKeys:def
-        })
-        selectedIds = [record.id];
-        // selectedRowKeys = [index];
-        selectedItem = [record]
+        // }
       }
-      this.props.updateSelectedItem(selectedRowKeys, selectedItem, selectedIds);
-    }else if(rowSelection.type == 'radio'){
-      let selectedRowKeys = [index];
-      let selectedItem = record;
-      this.props.updateSelectedItem(selectedRowKeys, selectedItem);
-    }else{
-      return
-    }
   }
 
   //table封装
   //rowSelection如传checkbox就是复选框，如传radio就是单选框，如果不传就是都没有
   tableInit = () =>{
     let row_selection = this.props.rowSelection;
-    let selectedRowKeys = this.props.selectedRowKeys;
     const rowSelection = {
       type:'radio',
       selectedRowKeys:this.state.selectedRowKeys,
       onChange: (selectedRowKeys, selectedRows) => {
         this.setState({
-          selectedRowKeys:selectedRowKeys,
+          selectedRowKeys,
           selectedRows
-        },()=>{
-          console.log('选中项有',this.state.selectedRowKeys)
-      });
+        });
       }
     }
-    if (!row_selection){
-        row_selection = false;
-    } else if (row_selection.type == 'checkbox'){
+    if (row_selection.type == 'checkbox'){
         rowSelection.type = 'checkbox';
     } else {
         rowSelection.type = 'radio';
@@ -88,11 +79,10 @@ export default class ETable extends Component{
         onRow={(record, index)=>{
           return {
             onClick: ()=>{
-              console.log(rowSelection.selectedRowKeys)
-              if (!row_selection) {
-                return;
-              }
-              this.onRowClick(record, index);
+              // if (!row_selection) {
+              //   console.log('没有值---------------------------------------------------------------------------------------------------');
+              // }
+              this.onRowClick(record, index,rowSelection);
             }
           }
         }}

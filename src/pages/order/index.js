@@ -191,8 +191,8 @@ export default class Order extends Component{
             updateSelectedItem={Util.updateSelectedItem.bind(this)}
             columns={columns}
             dataSource={this.state.list}
-            selectedIds={this.state.selectedIds}
-            selectedItem={this.state.selectedItem}
+            // selectedIds={this.state.selectedIds}
+            // selectedItem={this.state.selectedItem}
             selectedRowKeys={this.state.selectedRowKeys}
             pagination={this.state.pagination}
             rowSelection = {{
