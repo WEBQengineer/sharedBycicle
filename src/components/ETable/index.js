@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Card } from 'antd';
+import { Table } from 'antd';
 
 export default class ETable extends Component{
   state= {
@@ -8,13 +8,8 @@ export default class ETable extends Component{
 
   componentDidMount(){
     let stateSelectRow = this.state.selectedRowKeys;
-    let selectedRowKeys = this.props.selectedRowKeys;
-    if(!selectedRowKeys){
-      selectedRowKeys = [selectedRowKeys]
-    };
+    let selectedRowKeys = this.props.selectedRowKeys || [];
     selectedRowKeys = selectedRowKeys.concat(stateSelectRow);
-    // selectedRowKeys.push(...stateSelectRow);
-    selectedRowKeys.splice(0,1);
     console.log('之前就已经有的',selectedRowKeys);
     selectedRowKeys = Array.from(new Set(selectedRowKeys));
     this.setState({
@@ -27,13 +22,10 @@ export default class ETable extends Component{
     let selectedRowKeys = this.state.selectedRowKeys;
     if(rowSelection.type == 'checkbox'){
       //indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。如果要检索的字符串值没有出现，则该方法返回 -1。
-        // for(let i=0;i<selectedRowKeys.length;i++){
-          // const i = selectedIds.indexOf(record.id);
-          // if(selectedRowKeys[i] == index){
           let i = selectedRowKeys.indexOf(index);
           if(i!=-1 ){
             selectedRowKeys.splice(i,1);
-            selectedRowKeys = Array.from(new Set(selectedRowKeys));
+            selectedRowKeys = Array.from(new Set(selectedRowKeys));//数组去重
             // console.log('还剩下',selectedRowKeys);
             this.setState({
               selectedRowKeys
@@ -48,8 +40,16 @@ export default class ETable extends Component{
               selectedRowKeys:selectedRowKeys
             });
             // console.log('当前点击的行是：'+index,'选中的是',selectedRowKeys);
-          }
+          };
+          this.props.updateSelectedItem(record);
         // }
+      }else{
+        this.setState({
+          selectedRowKeys:[index]
+        },()=>{
+          console.log('我是selectedrowkeys',selectedRowKeys);
+          this.props.updateSelectedItem(record);
+        });
       }
   }
 
@@ -79,9 +79,6 @@ export default class ETable extends Component{
         onRow={(record, index)=>{
           return {
             onClick: ()=>{
-              // if (!row_selection) {
-              //   console.log('没有值---------------------------------------------------------------------------------------------------');
-              // }
               this.onRowClick(record, index,rowSelection);
             }
           }

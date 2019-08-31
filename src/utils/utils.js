@@ -107,10 +107,11 @@ export default {
    * @param {*} selectedRowKeys
    * @param {*} selectedItem
    */
-  updateSelectedItem(selectedRowKeys){
-
+  updateSelectedItem(selectedItem){
       this.setState({
-        selectedRowKeys,
+        selectedItem,
+      },()=>{
+        console.log('selectedItem123123',this.state.selectedItem);
       });
   }
 }

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Card, Button, Table , Form, Select, Modal, Input, message, DatePicker } from 'antd';
+import { Card, Button, Form, Modal, message } from 'antd';
 import BaseForm from '../../components/BaseForm/index';
 import ETable from '../../components/ETable/index';
 import axios from '../../axios/index';
 import Util from '../../utils/utils';
 const FormItem = Form.Item;
-const Option = Select.Option;
 
 export default class Order extends Component{
   state = {
@@ -69,7 +68,7 @@ export default class Order extends Component{
     }
   }
 
-  //结束订单onOk
+  //结束订单onOk事件
   handleFinishOrder = () => {
     let item = this.state.selectedItem;
     axios.ajax({
@@ -89,10 +88,10 @@ export default class Order extends Component{
       }
     })
   }
-
+  //打开订单详情
   openOrderDetail = () => {
     let item = this.state.selectedItem;
-    if(Object.keys(item).length == 0){  //ES6的新方法, 返回值是对象中属性名组成的数组
+    if(Object.keys(item).length == 0){ //ES6的新方法, 返回值是对象中属性名组成的数组
       Modal.info({
         title: '信息',
         content: '您还未选择订单'
@@ -175,28 +174,15 @@ export default class Order extends Component{
           <Button type='primary' onClick={this.openOrderDetail} >订单详情</Button>
           <Button type='primary' style={{marginLeft:20}} onClick={this.handleConfirm}>结束订单</Button>
         </Card>
-        {/* <Card>
-          <Table
-            columns={columns}
-            dataSource={this.state.list}
-            rowSelection = {{
-              type:'checkbox'
-            }}
-          >
-
-          </Table>
-        </Card> */}
         <div className='content-wrap'>
           <ETable
             updateSelectedItem={Util.updateSelectedItem.bind(this)}
             columns={columns}
             dataSource={this.state.list}
-            // selectedIds={this.state.selectedIds}
-            // selectedItem={this.state.selectedItem}
-            selectedRowKeys={this.state.selectedRowKeys}
+            selectedRowKeys={[0]}
             pagination={this.state.pagination}
             rowSelection = {{
-              type:'checkbox',
+              type:'radio'
             }}
           />
         </div>
