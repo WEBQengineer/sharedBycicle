@@ -19,6 +19,7 @@ export default class Tabs1 extends Component{
   add = () => {
     const { panes } = this.state;
     const activeKey = `newTab${this.newTabIndex++}`;
+    console.log('tab',this);
     panes.push({ title: activeKey, content: '欢迎使用本网站', key: activeKey });
     this.setState({ panes, activeKey });
   };
@@ -64,6 +65,7 @@ export default class Tabs1 extends Component{
       activeKey: panes[0].key,
       panes
     })
+
   };
 
   render(){
@@ -75,7 +77,7 @@ export default class Tabs1 extends Component{
           <TabPane tab="Tab 1" key="1">
             欢迎使用本网站 Tab Pane 1
           </TabPane>
-           <TabPane tab="Tab 2" disabled={true} key="2">  {/*api中没有写不过我试了下可以再disabled后设置true或者false来控制是否禁用 */}
+          <TabPane tab="Tab 2" disabled={true} key="2">  {/*api中没有写不过我试了下可以再disabled后设置true或者false来控制是否禁用 */}
            Tab Pane 2 标签被禁用
           </TabPane>
           <TabPane tab="Tab 3" key="3">

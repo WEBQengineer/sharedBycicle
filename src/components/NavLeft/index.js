@@ -29,12 +29,13 @@ export default class NavLeft extends Component{
       </Menu.Item>
     })
   }
+  
   render(){
     return(
       <div>
         <div className='logo'>
           <img src='/assets/logo-ant3.svg' alt=''/>
-          <h1>Shared bicycle</h1>
+          {/* <h1>Shared bicycle</h1> */}
         </div>
         <Menu theme='dark'>
           { this.state.menuTreeNode }

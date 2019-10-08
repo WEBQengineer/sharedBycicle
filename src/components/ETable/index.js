@@ -10,7 +10,7 @@ export default class ETable extends Component{
     let stateSelectRow = this.state.selectedRowKeys;
     let selectedRowKeys = this.props.selectedRowKeys || [];
     selectedRowKeys = selectedRowKeys.concat(stateSelectRow);
-    console.log('之前就已经有的',selectedRowKeys);
+    // console.log('之前就已经有的',selectedRowKeys);
     selectedRowKeys = Array.from(new Set(selectedRowKeys));
     this.setState({
       selectedRowKeys
@@ -39,15 +39,15 @@ export default class ETable extends Component{
             this.setState({
               selectedRowKeys:selectedRowKeys
             });
-            // console.log('当前点击的行是：'+index,'选中的是',selectedRowKeys);
           };
           this.props.updateSelectedItem(record);
         // }
       }else{
         this.setState({
+          // selectedRowKeys:[12]//mock数据设置为返回大于当前page_size,且selectedRowKeys设置为这行的话，意味着onchange事件中的index只对本页面生效
+          //而selectedRowKeys则是对所有数据生效
           selectedRowKeys:[index]
         },()=>{
-          console.log('我是selectedrowkeys',selectedRowKeys);
           this.props.updateSelectedItem(record);
         });
       }
@@ -65,11 +65,19 @@ export default class ETable extends Component{
           selectedRowKeys,
           selectedRows
         });
+        //点击编辑时，想让selectedRowKeys默认值也生效，在有默认值的情况下现在是必须选中行才行
+        //下面这行在是radio时，可以做到onchange也生效
+        if(row_selection.type = 'radio'){
+          this.props.updateSelectedItem(selectedRows[0]);
+          console.log('在radio时',selectedRows[0])
+        }
       }
     }
-    if (row_selection.type == 'checkbox'){
+    if (!row_selection) {
+      rowSelection.type = false
+    } else if (row_selection.type == 'checkbox'){
         rowSelection.type = 'checkbox';
-    } else {
+    } else if (row_selection.type == 'radio') {
         rowSelection.type = 'radio';
     }
     return <Table

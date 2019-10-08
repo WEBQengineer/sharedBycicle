@@ -10,11 +10,13 @@ export default class Order extends Component{
   state = {
     orderConfirmVisble:false,
     orderInfo:{},
-    selectedItem:{}
+    selectedItem:{},
+    // selectedRowKeys:[0]
   }
   params = {
     page:1
   }
+
   //form配置数据
   formList = [
     {
@@ -53,19 +55,21 @@ export default class Order extends Component{
 
   //结束订单
   handleConfirm = () => {
-    let item = this.state.selectedItem;
-    console.log(item);
-    if(Object.keys(item).length == 0){  //ES6的新方法, 返回值是对象中属性名组成的数组
-      Modal.info({
-        title: '信息',
-        content: '请选择一条订单进行结束'
-      });
-      return;
-    }else{
-      this.setState({
-        orderConfirmVisble:true
-      })
-    }
+      let item = this.state.selectedItem;
+      console.log('我是数组',item)
+      // if (!item) {  //因为下面还要展示出selectedItem的数据所以，必须先在state中声明一个空的selectedItem
+      //以此if (!item)这种判断方法不能生效
+      if(Object.keys(item).length == 0){  //ES6的新方法, 返回值是对象中属性名组成的数组
+        Modal.info({
+          title: '信息',
+          content: '请选择一条订单进行结束'
+        });
+        return;
+      }else{
+        this.setState({
+          orderConfirmVisble:true
+        })
+      }
   }
 
   //结束订单onOk事件
@@ -90,18 +94,20 @@ export default class Order extends Component{
   }
   //打开订单详情
   openOrderDetail = () => {
-    let item = this.state.selectedItem;
-    if(Object.keys(item).length == 0){ //ES6的新方法, 返回值是对象中属性名组成的数组
-      Modal.info({
-        title: '信息',
-        content: '您还未选择订单'
-      });
-      return;
-    }
-    window.open(`/#/common/order/detail/${item.id}`,'_blank')
+      let item = this.state.selectedItem;
+      if(Object.keys(item).length == 0){ //ES6的新方法, 返回值是对象中属性名组成的数组
+        Modal.info({
+          title: '信息',
+          content: '您还未选择订单'
+        });
+        return;
+      }
+      window.open(`/#/common/order/detail/${item.id}`,'_blank')
   }
 
+  
   render(){
+    let __this = this;
     const columns = [
       {
           title:'订单编号',
@@ -133,8 +139,15 @@ export default class Order extends Component{
       {
           title: '状态',
           dataIndex: 'status',
-          render(status){
-            return status ==1 ? '行程结束':'进行中'
+          //通过下面的方法获得了selectedRowKeys的默认值并使默认值生效，详情可看上面selectedItem1
+          render(text, record, index){
+            console.log('又执行一次');
+            let abc = __this.state.selectedRowKeys;
+            if(abc == index){
+              __this.selectedItem1=record;
+              // console.log('这里的this.selectedItem1',__this.selectedItem1)
+            };         
+            return text ==1 ? '行程结束':'进行中'
           }
       },
       {
@@ -179,7 +192,8 @@ export default class Order extends Component{
             updateSelectedItem={Util.updateSelectedItem.bind(this)}
             columns={columns}
             dataSource={this.state.list}
-            selectedRowKeys={[0]}
+            selectedItemClear={this.state.selectedItem1}
+            selectedRowKeys={this.state.selectedRowKeys}
             pagination={this.state.pagination}
             rowSelection = {{
               type:'radio'

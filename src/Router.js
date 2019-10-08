@@ -23,6 +23,9 @@ import OrderDetail from './pages/order/detail';
 import Bar from './pages/echarts/bar/index';
 import Pie from './pages/echarts/pie/index';
 import RichText from './pages/rich/index';
+import User from './pages/user';
+import BikeMap from './pages/map/bikeMap';
+import Home from './pages/home';
 
 
 export default class IRouter extends Component{
@@ -34,6 +37,7 @@ export default class IRouter extends Component{
               <Route path='/admin' render={()=>
                 <Admin>
                   <Switch>
+                    <Route path='/admin/home' component={Home}></Route>
                     <Route path='/admin/ui/buttons' component={Buttons}></Route>
                     <Route path='/admin/ui/modals' component={Modals}></Route>
                     <Route path='/admin/ui/loadings' component={Loadings}></Route>
@@ -51,6 +55,8 @@ export default class IRouter extends Component{
                     <Route path='/admin/charts/bar' component={Bar}></Route>
                     <Route path='/admin/charts/pie' component={Pie}></Route>
                     <Route path='/admin/rich' component={RichText}></Route>
+                    <Route path='/admin/user' component={User}></Route>
+                    <Route path='/admin/bikeMap' component={BikeMap}></Route>
                     <Route component={NoMatch}/>
                   </Switch>
                 </Admin>

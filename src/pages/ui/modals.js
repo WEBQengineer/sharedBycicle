@@ -32,12 +32,12 @@ export default class Modals extends Component{
   showConfirm = () => {
     Modal.confirm({
       title: '用下面这个判断条件模拟请求接口',
-      content: '判断条件是：a123 > 0.5 ? resolve : reject',
+      content: '判断条件是：randomNum > 0.5 ? resolve : reject',
       onOk() {
-        let a123 = Math.random();
+        let randomNum = Math.random();
         return new Promise((resolve, reject) => {
-          setTimeout(a123 > 0.5 ? resolve : reject, 1000);
-        }).then(function(){alert('模拟接口请求成功'+a123)}).catch(() => alert('本次模拟接口请求失败!'));
+          setTimeout(randomNum > 0.5 ? resolve : reject, 1000);
+        }).then(function(){alert('模拟接口请求成功'+randomNum)}).catch(() => alert('本次模拟接口请求失败!'));
       },
       onCancel() {}
     });

@@ -3,9 +3,14 @@ import { Select } from 'antd';
 const Option = Select.Option;
 
 export default {
-//再次升级版
-  getCurrentDate(){
-    let date = new Date();
+//获取时间，不传值获取的就是当前系统时间，传标准时间回转换成能理解的那种时间
+  getCurrentDate(date1){
+    let date;
+    if (date1) {
+      date = new Date(date1);
+    } else {
+      date = new Date();
+    }
     //得到月份
     function getMonth1(){
       if((date.getMonth()+1)<10){
@@ -89,7 +94,12 @@ export default {
         showQuickJumper:true
     }
   },
-
+  /**
+   *
+   *获取select标签中的Option
+   * @param {*} data  下拉选项，是一个对象数组，对象中有id和name
+   * @returns
+   */
   getOptionList(data){
     if(!data){
       return [];
@@ -104,7 +114,6 @@ export default {
   /**
    *保存选中行数据到state
    *
-   * @param {*} selectedRowKeys
    * @param {*} selectedItem
    */
   updateSelectedItem(selectedItem){

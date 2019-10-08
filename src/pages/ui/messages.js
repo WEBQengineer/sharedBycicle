@@ -8,10 +8,11 @@ export default class Messages extends Component{
   };
 
   info1 = () => {
-    const hide = message.success('This is a normal message', 1);
-    //  console.log(hide);//这个返回值hide，返回的是一个函数，从字面意义上看像是一个关闭message的功能
+    const hide = message.loading('3秒后自行移出', 0);
+    setTimeout(hide,3000)
+    // console.log(hide);//这个返回值hide，返回的是一个函数，从字面意义上看像是一个关闭message的功能
     // const hide =()=> message.loading('This is a normal message', 0);
-    setTimeout(hide, 1500);
+    // setTimeout(hide, 1500);
   };
   
   info2 = () => {
@@ -32,10 +33,10 @@ export default class Messages extends Component{
           <Button type='primary' onClick={()=>this.info('loading')}>Loading</Button>
         </Card>
         <Card title='异步自行移除' className='card-wrap'>
-          <Button type='primary' onClick={()=>this.info1('success')}>Success</Button>
+          <Button type='primary' onClick={this.info1}>Success</Button>
         </Card>
         <Card title='Promise接口' className='card-wrap'>
-          <Button type='primary' onClick={()=>this.info2('success')}>Success</Button>
+          <Button type='primary' onClick={this.info2}>Success</Button>
         </Card>
       </div>
     );

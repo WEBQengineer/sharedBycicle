@@ -30,9 +30,7 @@ export default class Axios{
     })
   }
 
-
-
-
+//jsonp封装f访问百度天气api
   static jsonp(options){
     return new Promise((resolve,reject)=>{
       JsonP(options.url,{
@@ -48,6 +46,7 @@ export default class Axios{
       })
     })
   }
+
 
 
   static ajax(options){

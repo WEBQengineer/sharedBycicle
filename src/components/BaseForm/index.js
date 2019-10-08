@@ -3,7 +3,6 @@ import { Input, Select, Button, Checkbox, Radio, Form, DatePicker } from 'antd';
 import Utils from '../../utils/utils';
 
 const FormItem = Form.Item;
-const Option = Select.Option;
 
 class FilterForm extends Component{
   //提交按钮
@@ -11,12 +10,17 @@ class FilterForm extends Component{
     let fieldsValue = this.props.form.getFieldsValue();
     this.props.filterSubmit(fieldsValue);
   } 
+  //重置按钮
   reset = ()=>{
     this.props.form.resetFields();
   }
 
-  reset
 
+  /**
+   *注意：width是number
+   *
+   * @memberof FilterForm
+   */
   initFormList = ()=>{
     const { getFieldDecorator } = this.props.form;
     const formList = this.props.formList;
@@ -63,6 +67,19 @@ class FilterForm extends Component{
             }
           </FormItem>
           formItemList.push(end_time)
+        }else if(item.type == '城市'){
+          const city = <FormItem label={label} key={field}>
+            {
+              getFieldDecorator([field],{
+                initialValue:initialValue
+              })(
+                <Select style = {{width:width}} placeholder={placeholder}>
+                  {Utils.getOptionList(item.list)}
+                </Select>
+              )
+            }
+          </FormItem>
+          formItemList.push(city)
         }else if(item.type == 'SELECT'){
           const SELECT = <FormItem label={label} key={field}>
             {
@@ -90,11 +107,26 @@ class FilterForm extends Component{
             }
           </FormItem>
           formItemList.push(Checkbox)
+        }else if(item.type == 'DATE'){
+          const Date = <FormItem label={label} key={field}>
+            {
+              getFieldDecorator([field])(
+                <DatePicker
+                  showTime={true} placeholder={placeholder}
+                  format='YYYY-MM-DD HH:mm:ss'
+                />
+              )
+            }
+          </FormItem>
+          formItemList.push(Date)
         }
       });
     };
     return formItemList;
   }
+
+
+
 
   render(){
     return (
